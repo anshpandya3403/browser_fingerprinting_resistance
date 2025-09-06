@@ -5,7 +5,8 @@
   "description": "Blocks and spoofs browser fingerprinting techniques.",
   "permissions": [
     "scripting",
-    "storage"
+    "storage",
+    "declarativeNetRequest"
   ],
   "action": {
     "default_popup": "popup.html",
@@ -22,7 +23,9 @@
     {
       "matches": ["<all_urls>"],
       "js": ["contentScript.js"],
-      "run_at": "document_start"
+      "run_at": "document_start",
+      "world": "MAIN"
+      
     }
   ],
   "icons": {
