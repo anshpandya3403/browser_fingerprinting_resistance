@@ -6,7 +6,10 @@
   "permissions": [
     "scripting",
     "storage",
-    "declarativeNetRequest"
+    "declarativeNetRequest",
+    "tabs",
+    "webRequest",
+    "webRequestBlocking"
   ],
   "action": {
     "default_popup": "popup.html",
