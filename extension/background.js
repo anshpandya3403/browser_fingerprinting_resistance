@@ -63,4 +63,4 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
   ["blocking", "requestHeaders"]
 );
 
-console.log("🔒 Per-domain persistent header spoofing enabled");
+console.log("Per domain header spoofing enabled");
