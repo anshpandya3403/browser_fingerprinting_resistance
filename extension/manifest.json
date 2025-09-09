@@ -11,6 +11,10 @@
     "webRequest",
     "webRequestBlocking"
   ],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
@@ -25,7 +29,11 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["contentScript.js"],
+      "js": ["contentScripts/inject_Canvas.js",
+      "contentScripts/inject_WebGL.js",
+      "contentScripts/inject_Audio.js",
+      "contentScripts/inject_Fonts.js",
+      "contentScripts/inject_Detection.js"],
       "run_at": "document_start",
       "world": "MAIN"
       

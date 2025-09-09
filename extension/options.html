@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Privacy Extension Settings</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 16px; width: 300px; }
+    h2 { margin-bottom: 10px; }
+    .toggle { margin-bottom: 8px; }
+    label { margin-left: 6px; }
+  </style>
+</head>
+<body>
+  <h2>Protection Modules</h2>
+  <div class="toggle"><input type="checkbox" id="canvas"><label for="canvas">Canvas</label></div>
+  <div class="toggle"><input type="checkbox" id="webgl"><label for="webgl">WebGL</label></div>
+  <div class="toggle"><input type="checkbox" id="audio"><label for="audio">Audio</label></div>
+  <div class="toggle"><input type="checkbox" id="fonts"><label for="fonts">Fonts</label></div>
+  <div class="toggle"><input type="checkbox" id="headers"><label for="headers">Headers</label></div>
+  <div class="toggle"><input type="checkbox" id="webrtc"><label for="webrtc">WebRTC</label></div>
+  <button id="save">Save</button>
+  <script src="options.js"></script>
+</body>
+</html>
