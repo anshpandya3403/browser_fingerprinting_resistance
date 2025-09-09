@@ -1,15 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Anti-Fingerprinting</title>
+  <meta charset="utf-8">
+  <title>Anti-Fingerprint Control</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 10px; }
-    button { padding: 10px; font-size: 14px; }
+    body {
+      min-width: 200px;
+      font-family: Arial, sans-serif;
+      padding: 12px;
+    }
+    .switch {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+    .switch input[type="checkbox"] {
+      margin-right: 8px;
+    }
+    button {
+      padding: 6px 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-  <h3>Anti-Fingerprinting</h3>
-  <button id="toggle">Toggle Protection</button>
+  <h3>Fingerprint Protection</h3>
+  <div class="switch">
+    <input type="checkbox" id="toggle-protection">
+    <label for="toggle-protection">Enable Protection</label>
+  </div>
+  <button id="open-options">Settings</button>
 
   <script src="popup.js"></script>
 </body>
