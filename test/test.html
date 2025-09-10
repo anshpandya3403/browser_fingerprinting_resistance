@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fingerprinting Demo</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }
+    button { padding: 10px 20px; font-size: 16px; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Browser Fingerprinting Demo</h1>
+  <button id="startBtn">Start Fingerprinting</button>
+
+  <h2>Collected Fingerprint:</h2>
+  <pre id="fingerprint">Waiting for user action...</pre>
+
+  <script>
+    async function getCanvasFingerprint() {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 200;
+      canvas.height = 50;
+
+      ctx.textBaseline = "top";
+      ctx.font = "16px 'Arial'";
+      ctx.fillStyle = "#f60";
+      ctx.fillRect(125, 1, 62, 20);
+      ctx.fillStyle = "#069";
+      ctx.fillText("Browser Fingerprint", 2, 15);
+
+      return canvas.toDataURL();
+    }
+
+    async function getAudioFingerprint() {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      await ctx.audioWorklet.addModule('audio-worklet-processor.js');
+
+      return new Promise((resolve) => {
+        const oscillator = ctx.createOscillator();
+        const workletNode = new AudioWorkletNode(ctx, 'fingerprint-processor');
+
+        workletNode.port.onmessage = (event) => {
+          oscillator.stop();
+          workletNode.disconnect();
+          resolve(event.data);
+        };
+
+        oscillator.type = 'triangle';
+        oscillator.frequency.setValueAtTime(10000, ctx.currentTime);
+        oscillator.connect(workletNode).connect(ctx.destination);
+        oscillator.start();
+      });
+    }
+
+    function getWebGLFingerprint() {
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      if (!gl) return 'WebGL not supported';
+
+      const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+      return {
+        vendor: gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL),
+        renderer: gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+      };
+    }
+
+    function detectFonts() {
+      const baseFonts = ['monospace', 'sans-serif', 'serif'];
+      const testFonts = ['Arial', 'Courier New', 'Georgia', 'Times New Roman', 'Trebuchet MS', 'Verdana'];
+      const testString = "mmmmmmmmmmlli";
+      const testSize = '72px';
+
+      const span = document.createElement('span');
+      span.style.fontSize = testSize;
+      span.innerText = testString;
+      document.body.appendChild(span);
+
+      const defaultWidths = {};
+      const defaultHeights = {};
+
+      for (let base of baseFonts) {
+        span.style.fontFamily = base;
+        defaultWidths[base] = span.offsetWidth;
+        defaultHeights[base] = span.offsetHeight;
+      }
+
+      const detected = [];
+
+      for (let font of testFonts) {
+        let found = false;
+        for (let base of baseFonts) {
+          span.style.fontFamily = `'${font}', ${base}`;
+          if (span.offsetWidth !== defaultWidths[base] || span.offsetHeight !== defaultHeights[base]) {
+            found = true;
+            break;
+          }
+        }
+        if (found) detected.push(font);
+      }
+
+      document.body.removeChild(span);
+      return detected;
+    }
+
+    async function generateFingerprint() {
+      const canvasFp = await getCanvasFingerprint();
+      const audioFp = await getAudioFingerprint();
+      const webglFp = getWebGLFingerprint();
+      const fonts = detectFonts();
+      const userAgent = navigator.userAgent;
+
+      return {
+        userAgent: userAgent,
+        canvas: canvasFp,
+        audio: audioFp,
+        webgl: webglFp,
+        fonts: fonts
+      };
+    }
+
+    document.getElementById('startBtn').addEventListener('click', async () => {
+      document.getElementById('fingerprint').textContent = 'Collecting...';
+      const fingerprint = await generateFingerprint();
+      document.getElementById('fingerprint').textContent = JSON.stringify(fingerprint, null, 2);
+    });
+  </script>
+</body>
+</html>

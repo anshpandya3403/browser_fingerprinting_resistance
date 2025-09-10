@@ -38,7 +38,7 @@
       callCounts[path]++;
       if (callCounts[path] === THRESHOLD) {
         const site = window.location.href;
-        console.warn(`Fingerprinting attempt detected: ${path}`);
+        console.log(`${site} tried to access senstive api ${path}`)
         reportToBackend(api = path, site); // call async function, not awaited
       }
       return original.apply(this, args);

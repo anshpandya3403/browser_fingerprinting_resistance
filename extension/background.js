@@ -54,7 +54,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
       }
       if (header.name.toLowerCase() === "dnt") {
         header.value = identity.dnt;
-      }
+      } 
     }
 
     return { requestHeaders: details.requestHeaders };

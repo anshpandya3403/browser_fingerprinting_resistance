@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 async function connectDB() {
   try {
-    await mongoose.connect(process.env.ATLAS_URI, {
+    await mongoose.connect('mongodb+srv://anshpandya3403:hSpBwh08iGEuUDeL@messages.sfzxxpr.mongodb.net/?retryWrites=true&w=majority&appName=Messages', {
       useNewUrlParser: true,
       useUnifiedTopology: true
     });
